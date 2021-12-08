@@ -1,14 +1,13 @@
 const imagePath = {
     character: {
-        small: './assets/character2.png',
-        big: './assets/character.png',
+        small: "./assets/character2.png",
+        big: "./assets/character.png",
     },
     textures: {
         mushroom: './assets/temporaryMushroom.webp',
         enemy: './assets/enemy.png'
     }
-}
-let bool = true;
+};
 
 
 let controller = {
@@ -18,7 +17,7 @@ let controller = {
     down: false,
     keyListener: function (event) {
 
-        let key_state = (event.type == 'keydown') ? true : false;
+        let key_state = (event.type == "keydown") ? true : false;
 
         switch (event.keyCode) {
 
@@ -75,7 +74,7 @@ let canvas = document.getElementById('canvas');
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
-let ctx = canvas.getContext('2d');
+let ctx = canvas.getContext("2d");
 
 let character = new Image();
 character.src = imagePath.character.small;
@@ -88,6 +87,7 @@ enemy.src = imagePath.textures.enemy;
 
 function updateFrame() {
     curFrame = ++curFrame % (frameCount - 4);
+    drawTexture([mushroom, 600, 350, 60, 60]);
 
     u = ((++u % 2) + 2);
     u1 = ((++u1 % 2) + 4);
@@ -95,9 +95,11 @@ function updateFrame() {
     if (turn === true) {
         srcX = 3 * width;
         srcY = 0;
-    } else {
+    }
+    else {
         srcX = 4 * width;
         srcY = 0;
+
     }
 
     if (controller.left && x > 0) {
@@ -107,6 +109,7 @@ function updateFrame() {
         x -= speed;
         turn = false;
     }
+
 
 
     if (controller.right && x < canvasWidth - width) {
@@ -122,13 +125,17 @@ function updateFrame() {
         srcX = u1 * width;
 
         // controller.up = true;
-    } else if (controller.up && turn == true && y > 50) {
+    }
+    else if (controller.up && turn == true && y > 50) {
         y -= 10;
         srcY = 1 * height;
         srcX = u * width;
 
         // controller.up = true;
-    } else {
+    }
+
+
+    else {
         y = 350;
     }
 
@@ -136,36 +143,30 @@ function updateFrame() {
         // height = spriteHeight / (2 * rows);
         srcX = 1 * width;
         srcY = height;
-
-
-    } else if (controller.down && y === 350 && turn === false) {
+    }
+    else if (controller.down && y === 350 && turn === false) {
         // height = spriteHeight / (2 * rows);
         srcX = 6 * width;
         srcY = height;
-
-
-    } else if (controller.down == false) {
+    }
+    else if (controller.down == false) {
         height = spriteHeight / rows;
         y = y - spriteHeight / (2 * rows);
     }
-    if (x >= 500 && x <= 600 && bool) {
-        if(turn) {
-            bool = false;
-        }
+    if(x >= 500 && x <= 600) {
         ctx.clearRect(600, y + 70, 60, 60);
         character.src = imagePath.character.big;
+
     }
-    if(x > 700) {
-        bool = true;
-    }
-    if (x >= 700) {
+    if(x >= 700) {
         character.src = imagePath.character.small;
     }
+
 }
 
 function draw() {
     updateFrame();
-    drawTexture([enemy, 800, 300, 60, 60]);
+    drawTexture([enemy, 800, 350, 60, 60]);
     ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
 }
 
@@ -173,7 +174,7 @@ function drawTexture(renderer) {
     ctx.drawImage(...renderer);
 }
 
-window.addEventListener('keydown', controller.keyListener);
-window.addEventListener('keyup', controller.keyListener);
+window.addEventListener("keydown", controller.keyListener);
+window.addEventListener("keyup", controller.keyListener);
+
 setInterval(draw, 100);
-drawTexture([mushroom, 600, 300, 60, 60]);
